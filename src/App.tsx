@@ -3,9 +3,11 @@ import { supabase } from './lib/supabase';
 import { AuthForm } from './components/AuthForm';
 import { MeetingRecorder } from './components/MeetingRecorder';
 import { MeetingDashboard } from './components/MeetingDashboard';
-import { Video, History, LogOut } from 'lucide-react';
+import { IntegrationSetup } from './components/IntegrationSetup';
+import { ScheduledMeetings } from './components/ScheduledMeetings';
+import { Video, History, LogOut, Settings, Calendar } from 'lucide-react';
 
-type View = 'dashboard' | 'recorder';
+type View = 'dashboard' | 'recorder' | 'integrations' | 'scheduled';
 
 function App() {
   const [user, setUser] = useState<any>(null);
@@ -57,36 +59,60 @@ function App() {
               <h1 className="text-2xl font-bold text-gray-800">Meeting Recorder</h1>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => setCurrentView('dashboard')}
-                className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+                className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
                   currentView === 'dashboard'
                     ? 'bg-blue-600 text-white'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                <History size={18} />
+                <History size={16} />
                 Dashboard
               </button>
 
               <button
                 onClick={() => setCurrentView('recorder')}
-                className={`px-4 py-2 rounded-lg transition-colors flex items-center gap-2 ${
+                className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
                   currentView === 'recorder'
                     ? 'bg-blue-600 text-white'
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
               >
-                <Video size={18} />
-                New Recording
+                <Video size={16} />
+                Record
+              </button>
+
+              <button
+                onClick={() => setCurrentView('scheduled')}
+                className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
+                  currentView === 'scheduled'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Calendar size={16} />
+                Scheduled
+              </button>
+
+              <button
+                onClick={() => setCurrentView('integrations')}
+                className={`px-3 py-2 rounded-lg transition-colors flex items-center gap-2 text-sm ${
+                  currentView === 'integrations'
+                    ? 'bg-blue-600 text-white'
+                    : 'text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <Settings size={16} />
+                Integrations
               </button>
 
               <button
                 onClick={handleSignOut}
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-2"
+                className="px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center gap-2 text-sm"
               >
-                <LogOut size={18} />
+                <LogOut size={16} />
                 Sign Out
               </button>
             </div>
@@ -97,6 +123,8 @@ function App() {
       <main className="py-8">
         {currentView === 'dashboard' && <MeetingDashboard />}
         {currentView === 'recorder' && <MeetingRecorder onMeetingComplete={handleMeetingComplete} />}
+        {currentView === 'scheduled' && <ScheduledMeetings />}
+        {currentView === 'integrations' && <IntegrationSetup />}
       </main>
     </div>
   );
